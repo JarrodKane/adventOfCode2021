@@ -2010,9 +2010,6 @@ for (let i = 0; i < arrayPuzzle.length; i++) {
   }
   let prevValue = arrayPuzzle[i - 1];
   if (prevValue < arrayPuzzle[i]) {
-    // console.log(
-    //   `${prevValue} < ${arrayPuzzle[i]} ${prevValue < arrayPuzzle[i]}`
-    // );
     numberOfIncreases++;
   } else {
     numberOfDecrease++;
