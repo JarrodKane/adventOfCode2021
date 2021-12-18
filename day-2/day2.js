@@ -7,8 +7,9 @@
 // X Horizontal
 // Y Vertical = depth down, more depth, up less depth
 
-let x = 0;
-let y = 0;
+// let x = 0;
+// let y = 0;
+// let aim = 0;
 
 const puzzleInput = `forward 4
 down 9
@@ -1011,6 +1012,38 @@ up 6
 down 7
 forward 2`;
 
+// let returnedArr = [];
+// let movement = { x: 0, y: 0 };
+// const checking = (current) => {
+//   let key = current.substr(0, current.indexOf(" "));
+//   let number = Number(current.substr(current.indexOf(" ") + 1));
+//   returnedArr = [...returnedArr, { [key]: number }];
+
+//   switch (key) {
+//     case "forward":
+//       y = y + number;
+//       break;
+
+//     case "down":
+//       x = x + number;
+//       break;
+//     case "up":
+//       x = x - number;
+//       break;
+//     default:
+//       break;
+//   }
+// };
+
+// const arrayPuzzle = puzzleInput.split("\n");
+// const arrayReduce = arrayPuzzle.forEach((x) => checking(x));
+
+// PASRT 2
+
+let x = 0; // depth
+let y = 0;
+let aim = 0;
+
 let returnedArr = [];
 let movement = { x: 0, y: 0 };
 const checking = (current) => {
@@ -1018,26 +1051,43 @@ const checking = (current) => {
   let number = Number(current.substr(current.indexOf(" ") + 1));
   returnedArr = [...returnedArr, { [key]: number }];
 
-  switch (key) {
-    case "forward":
-      y = y + number;
-      break;
-
-    case "down":
-      x = x + number;
-      break;
-    case "up":
-      x = x - number;
-      break;
-    default:
-      break;
+  if (aim === 0) {
+    switch (key) {
+      case "forward":
+        y = y + number;
+        break;
+      case "down":
+        // x = x + number;
+        aim = number;
+        break;
+      case "up":
+        // x = x - number;
+        aim = number;
+        break;
+      default:
+        break;
+    }
+  } else {
+    switch (key) {
+      case "forward":
+        y = y + number;
+        x = x + aim * number;
+        break;
+      case "down":
+        aim = aim + number;
+        break;
+      case "up":
+        aim = aim - number;
+        break;
+      default:
+        break;
+    }
   }
 };
 
 const arrayPuzzle = puzzleInput.split("\n");
 const arrayReduce = arrayPuzzle.forEach((x) => checking(x));
+console.log(x);
+console.log(y);
 
-// console.log(x);
-// console.log(y);
-
-// console.log(x * y);
+console.log(x * y);
