@@ -1038,4 +1038,4 @@ const dataLines = data.split("\n").map((value) => checking(value));
 gammeD = gamma.join("");
 epsilonD = epsilon.join("");
 
-console.log(parseInt(gammeD, 2) * parseInt(epsilonD, 2));
+// console.log(parseInt(gammeD, 2) * parseInt(epsilonD, 2));

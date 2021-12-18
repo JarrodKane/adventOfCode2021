@@ -1037,7 +1037,7 @@ const checking = (current) => {
 const arrayPuzzle = puzzleInput.split("\n");
 const arrayReduce = arrayPuzzle.forEach((x) => checking(x));
 
-console.log(x);
-console.log(y);
+// console.log(x);
+// console.log(y);
 
-console.log(x * y);
+// console.log(x * y);

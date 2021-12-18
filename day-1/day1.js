@@ -2013,9 +2013,39 @@ for (let i = 0; i < arrayPuzzle.length; i++) {
     numberOfIncreases++;
   } else {
     numberOfDecrease++;
-    console.log("FALSE");
+    // console.log("FALSE");
   }
 }
 
-console.log(numberOfIncreases);
-console.log(numberOfDecrease);
+// console.log(numberOfIncreases);
+// console.log(numberOfDecrease);
+
+// Part B
+let sumsO = {}; // key : 1 or 2
+// console.log(arrayPuzzle.length % 3);
+// minus 2 because there's two values that
+
+// let x;
+// let y;
+let increases = 0;
+let decrease = 0;
+
+console.log(arrayPuzzle.length % 3);
+console.log((arrayPuzzle.length + 1) % 3);
+for (let i = 0; i < arrayPuzzle.length; i++) {
+  if (i === 0) {
+    // Do nothing
+    continue;
+  } else {
+    let x = arrayPuzzle[i - 1] + arrayPuzzle[i] + arrayPuzzle[i + 1];
+    let y = arrayPuzzle[i] + arrayPuzzle[i + 1] + arrayPuzzle[i + 2];
+    if (y > x) {
+      increases++;
+    }
+  }
+}
+console.log(increases);
+
+//  1607
+//  1649
+//  1608
