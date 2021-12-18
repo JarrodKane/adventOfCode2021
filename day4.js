@@ -643,10 +643,22 @@ const playBingo = (card, cardID) => {
 };
 
 const loopArr = (row) => {
-  let bingo;
+  let foundData = 0;
   // console.log(row);
   const found = row.some((r) => newBingoData.indexOf(Number(r)));
-  console.log(found);
+  for (let i = 0; i < newBingoData.length; i++) {
+    for (let x = 0; x < row.length; x++) {
+      if (foundData === 5) {
+        console.log(newBingoData[i]);
+        break;
+      }
+      if (newBingoData[i] === Number(row[x])) {
+        foundData++;
+      }
+    }
+  }
+
+  // console.log(found);
   // for (let t = 0; t < newBingoData.length; t++) {
   //   row.some(newBingoData[t]);
   // }
