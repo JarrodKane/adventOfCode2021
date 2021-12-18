@@ -1013,16 +1013,32 @@ let epsilon = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 let gammeD;
 let epsilonD;
 
+// Part 2
+let oxyR = [];
+let co2R = [];
+
+let start0 = [];
+let start1 = [];
+
 const checking = (x) => {
   let arr = [...x];
   for (let i = 0; i < arr.length; i++) {
     rate[i] = rate[i] + (Number(x[i]) === 1 ? 1 : -1);
   }
-  return gammaEpsilon();
+  gammaEpsilon();
+
+  if (Number(x[0]) === 0) {
+    start0 = [...start0, x];
+  } else {
+    start1 = [...start1, x];
+  }
+
+  return Number(x);
 };
 
 const gammaEpsilon = () => {
   for (let i = 0; i < rate.length; i++) {
+    // start1 = reducer(start0, i);
     if (rate[i] > 0) {
       gamma[i] = 1;
       epsilon[i] = 0;
@@ -1033,9 +1049,85 @@ const gammaEpsilon = () => {
   }
 };
 
-const dataLines = data.split("\n").map((value) => checking(value));
+let indexCount = 0;
+let returnOxy;
+let returnCo2;
+
+const reducer = (arr, index, type) => {
+  let ones = [];
+  let zeros = [];
+
+  let arrPlay = [...arr];
+  console.log(arr.length);
+  console.log(arr.length);
+  console.log(arrPlay.length === 1);
+
+  if (arrPlay.length === 1) {
+    return;
+  }
+
+  for (let i = 0; i < arrPlay.length; i++) {
+    if (Number(arrPlay[i][index]) === 0) {
+      zeros = [...zeros, arrPlay[i]];
+    } else {
+      ones = [...ones, arrPlay[i]];
+    }
+  }
+
+  if (type === "oxy") {
+    if (ones.length === zeros.length) {
+      returnOxy = [...ones];
+    } else if (ones.length > zeros.length) {
+      returnOxy = [...ones];
+    } else {
+      returnOxy = [...zeros];
+    }
+
+    if (indexCount < 12) {
+      indexCount++;
+      reducer(returnOxy, indexCount, type);
+    } else {
+      indexCount = 0;
+    }
+  } else {
+    if (ones.length === zeros.length) {
+      returnCo2 = [...zeros];
+    } else if (ones.length < zeros.length) {
+      returnCo2 = [...ones];
+    } else {
+      returnCo2 = [...zeros];
+    }
+    if (indexCount < 12) {
+      indexCount++;
+      reducer(returnCo2, indexCount, type);
+    } else {
+      indexCount = 0;
+    }
+  }
+};
+
+// const dataLines = data.split("\n").map((value) => checking(value));
+let newData = [...data.split("\n").map((x) => x)];
+
+reducer(newData, 0, "oxy");
+
+// reducer(newData, 0, "asdd");
+
+console.log(parseInt(returnOxy, 2));
+
+// console.log(parseInt(returnCo2, 2));
+
+// co2R = reducer(dataLines, 0, "co2");
+// console.log(parseInt(returnCo2, 2));
+// 1926
+let ox = 1935;
+let co2 = 3145;
+
+console.log(ox * co2);
 
 gammeD = gamma.join("");
 epsilonD = epsilon.join("");
 
 // console.log(parseInt(gammeD, 2) * parseInt(epsilonD, 2));
+
+// PART 2
