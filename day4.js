@@ -600,81 +600,75 @@ const bingoTablesRaw = `57 80 91 40 12
 20 88 12 45 28
  8 29  0 37 27`;
 
+const smallTable = `57 80 91 40 12
+62 36 72  0 20
+55 60 25 92 96
+14  2 17 18 86
+ 1  4 90 66 38`;
+
 const newBingoData = bingoDataRaw.split(",").map(Number);
+
+let lowestScore = 100;
+let lowestCardID = -1;
+let winningCard;
 
 const playBingo = (card, cardID) => {
   // Loop through the bingo cards not the array
   // Count when we hit a full row or column, but what number is hit
-  let bingo = {
-    indexOfBingo: "",
-    row: [],
-    cardID,
-    sum: 0,
-    status: "",
-  };
-
-  // let bingo = false;
-  // let rowBingo = 0;
-  // while ((bingo === false, i)) {
-  //   for (let x = 0; x < card[i].length; x++) {
-  //     for (let y = 0; y < 5; y++) {
-  //       if (newBingoData[i] === card[i][y]) {
-  //         rowBingo++;
-  //       }
-  //     }
-  //   }
-  // }
+  let rowScore;
 
   for (let i = 0; i < card.length; i++) {
-    for (let x = 0; x < card[i].length; x++) {
-      loopArr(card[i]);
-
-      // if (rowBingo === 5) {
-      //   bingo.indexOfBingo = newBingoData.indexOf(Number(card[i][x]));
-      //   bingo.row = card[i];
-      //   bingo.status = "bingo";
-      //   // sumOfUnmarked(newBingoData.indexOf(Number(card[i][x])), card);
-      //   break;
-      // }
+    rowScore = loopArr(card[i]);
+    if (lowestScore >= rowScore) {
+      lowestScore = rowScore;
+      lowestCardID = cardID;
     }
-    // Also loop through the columns at the same time
   }
-  return bingo;
+
+  // Turns into columns to count
+  for (let x = 0; x < card.length; x++) {
+    let columnCard = [
+      card[0][x],
+      card[1][x],
+      card[2][x],
+      card[3][x],
+      card[4][x],
+    ];
+
+    rowScore = loopArr(columnCard);
+    if (lowestScore >= rowScore) {
+      lowestScore = rowScore;
+      lowestCardID = cardID;
+    }
+  }
+  if (cardID === lowestCardID) {
+    winningCard = card;
+  }
 };
 
 const loopArr = (row) => {
   let foundData = 0;
-  // console.log(row);
-  const found = row.some((r) => newBingoData.indexOf(Number(r)));
+  let lastRowNumIndex;
   for (let i = 0; i < newBingoData.length; i++) {
-    for (let x = 0; x < row.length; x++) {
+    // Keep going unless the I is bigger than lowest score
+    if (i <= lowestScore) {
       if (foundData === 5) {
-        console.log(newBingoData[i]);
+        lastRowNumIndex = i;
         break;
-      }
-      if (newBingoData[i] === Number(row[x])) {
+      } else if (row.includes(String(newBingoData[i]))) {
+        // console.log(i);
         foundData++;
       }
+    } else {
+      // There is a lower score, so skip
+      break;
     }
   }
-
-  // console.log(found);
-  // for (let t = 0; t < newBingoData.length; t++) {
-  //   row.some(newBingoData[t]);
-  // }
+  return lastRowNumIndex;
 };
 
-const sumOfUnmarked = (indexOfLastFound, card) => {
-  // MORE FOR LOOPS
-  let sumNotFound = 0;
-  let arr = [...newBingoData];
-  let newData = arr.splice(indexOfLastFound, 100);
-  console.log(newData);
-  for (let i = 0; i < indexOfLastFound; i++) {}
-};
-
-let arrBase;
-
+// smallTable
+// bingoTablesRaw
 // let bingoCardResults;
 const bingoTables = bingoTablesRaw.split("\n\n").map((x, i) => {
   let table = [];
@@ -688,4 +682,38 @@ const bingoTables = bingoTablesRaw.split("\n\n").map((x, i) => {
   return playBingo(table, i);
 });
 
-// console.log(bingoTables);
+// console.log(`Lowest index hit ${newBingoData[lowestScore]}`);
+// console.log(`Lowest card id ${lowestCardID}`);
+
+let leftOver = [];
+let sumOfNumbers = 0;
+let winningNumber;
+const boardScore = (lowestNumberIndex, card) => {
+  winningNumber = newBingoData[lowestNumberIndex - 1];
+  let newArr = newBingoData.splice(lowestNumberIndex, 100);
+
+  for (let i = 0; i < card.length; i++) {
+    for (let x = 0; x < card.length; x++) {
+      if (newArr.includes(Number(card[i][x]))) {
+        leftOver = [...leftOver, Number(card[i][x])];
+        sumOfNumbers = sumOfNumbers + Number(card[i][x]);
+      } else {
+      }
+    }
+  }
+
+  console.log(sumOfNumbers * winningNumber);
+};
+const lowestBoardScore = boardScore(lowestScore, winningCard);
+
+// console.log(`Sum of numbers: ${sumOfNumbers}`);
+
+// const add = (accumulator, a) => {
+//   return accumulator + a;
+// };
+
+// console.log(leftOver.reduce(add, 0));
+//  418 is too low
+// 17138
+// 32604 Not right
+// 55770
